@@ -2,16 +2,32 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+import {BrowserRouter } from "react-router-dom"
+import express from "express"
+import * as dotenv from "dotenv"
+import connect from './config/db.config';
+import userRoute from './routes/user.Routes';
+
+
+
+const app = express()
+dotenv.config()
+app.use(express.json())
+connect()
+app.use("/user", userRoute)
+//app.use("/task", taskRoute)
+
+app.listen(process.env.PORT, ()=>{
+  console.log(`Server up and running on port: http://localhost:${process.env.PORT}`)
+})
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <App />   
+    </BrowserRouter>
+   
   </React.StrictMode>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
